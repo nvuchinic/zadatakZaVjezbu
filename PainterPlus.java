@@ -30,6 +30,8 @@ new Color(133, 7, 42),
 * Veličina kvadratića u paleti boja.
 */
 private static int colorPickerSize = 50;
+private static int lineWidthPickerSize = 40;
+
 
 public static void main(String[] args) {
 PaintListener listener = new PaintListener();
@@ -51,6 +53,7 @@ private static int prevY; // The previous location of the mouse.
 
 public static class PaintListener implements MouseListener, MouseMotionListener {
 private Color selectedColor = Color.RED;
+private int selectedLineWidth=3;
 /**
 * Provjerava koordinate na kojima se nalazio kursor miša i poredi
 * s indeksima niza palette u kojem se nalaze boje iscrtane na dnu
@@ -78,6 +81,14 @@ break;
 }
 }
 }
+if(e.getY()<lineWidthPickerSize && e.getX()>source.getWidth()-3*lineWidthPickerSize){
+	if(e.getX()>source.getWidth()-lineWidthPickerSize)
+		selectedLineWidth=3;
+	else if(e.getX()>source.getWidth()-2*lineWidthPickerSize)
+		selectedLineWidth=6;
+	else 
+		selectedLineWidth=10;
+}
 else{
 	prevX=e.getX();
 	prevY=e.getY();
@@ -93,7 +104,7 @@ int y=e.getY();
 g.setColor(selectedColor);
 //int ovalDiameter = 10;
 Graphics2D g2 = (Graphics2D) g;
-g2.setStroke(new BasicStroke(3));
+g2.setStroke(new BasicStroke(selectedLineWidth));
 g.drawLine(prevX, prevY, x, y);
 
 prevX=x;
@@ -133,6 +144,15 @@ public void paintComponent(Graphics g) {
 for (int i = 0; i < palette.length; i++) {
 g.setColor(palette[i]);
 g.fillRect(colorPickerSize * i, getHeight() - colorPickerSize, colorPickerSize, colorPickerSize);
+}
+for(int i=3;i>=1;i--){
+g.drawRect(getWidth()-lineWidthPickerSize*i, 0, lineWidthPickerSize, lineWidthPickerSize);
+
+}
+for(int i=3;i>=1;i--){
+	Graphics2D g2 = (Graphics2D) g;
+	g2.setStroke(new BasicStroke(3*i));
+	g.drawLine(getWidth()-lineWidthPickerSize*i+5, lineWidthPickerSize/2, getWidth()-lineWidthPickerSize*i+lineWidthPickerSize-5, lineWidthPickerSize/2);
 }
 }
 }
