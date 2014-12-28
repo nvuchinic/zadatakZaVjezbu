@@ -97,6 +97,7 @@ else{
 
 @Override
 public void mouseDragged(MouseEvent e) {
+
  Component source = (Component)e.getSource();
 Graphics g = source.getGraphics();
 int x=e.getX();
@@ -104,17 +105,23 @@ int y=e.getY();
 g.setColor(selectedColor);
 //int ovalDiameter = 10;
 Graphics2D g2 = (Graphics2D) g;
+if(((e.getY()>lineWidthPickerSize+5 && e.getY()<source.getHeight()-(colorPickerSize+5))||(e.getY()<lineWidthPickerSize && e.getX()<source.getWidth()-3*lineWidthPickerSize-5)))//||(e.getY()>source.getHeight()-colorPickerSize+5 && e.getX()<source.getWidth()-8*colorPickerSize)))
+{	
 g2.setStroke(new BasicStroke(selectedLineWidth));
 g.drawLine(prevX, prevY, x, y);
 
 prevX=x;
-prevY=y;
+prevY=y; }
 //g.fillOval(e.getX() - ovalDiameter/2, e.getY() - ovalDiameter/2, ovalDiameter, ovalDiameter);
 //g.fill(e.getX() - ovalDiameter/2, e.getY() - ovalDiameter/2, ovalDiameter, ovalDiameter);
 }
 
 @Override
-public void mouseReleased(MouseEvent e) { }
+public void mouseReleased(MouseEvent e) { 
+//	 if (dragging == false)
+//         return;  // Nothing to do because the user isn't drawing.
+//     dragging = false;
+}
 
 @Override
 public void mouseClicked(MouseEvent e) { }
